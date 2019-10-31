@@ -1,37 +1,51 @@
 import { Menu, Container, Image, Icon } from 'semantic-ui-react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+// Util
+import showProgressBar from './../../utils/showProgressBar';
 
 function Header() {
+  const router = useRouter();
+
+  // Shows progress bar
+  showProgressBar();
+
   // Temp user
   const user = false;
+
+  // Check current path for active state
+  function pathIsActive(pathname) {
+    return pathname === router.pathname;
+  }
 
   return (
     <Menu fluid={true} id="menu" inverted={true}>
       <Container text>
         <Link href="/">
-          <Menu.Item header>
+          <Menu.Item header active={pathIsActive('/')}>
             <Image
               size="mini"
               src="/static/logo.svg"
               style={{ marginRight: '1em' }}
             />{' '}
-            ReactReserve
+            React Online Shop
           </Menu.Item>
         </Link>
         <Link href="/cart">
-          <Menu.Item header>
+          <Menu.Item header active={pathIsActive('/cart')}>
             <Icon name="cart" style={{ marginRight: '1em' }} /> Cart
           </Menu.Item>
         </Link>
         {user ? (
           <>
             <Link href="/create">
-              <Menu.Item header>
+              <Menu.Item header active={pathIsActive('/create')}>
                 <Icon name="add square" style={{ marginRight: '1em' }} /> Create
               </Menu.Item>
             </Link>
             <Link href="/account">
-              <Menu.Item header>
+              <Menu.Item header active={pathIsActive('/account')}>
                 <Icon name="user" size="large" style={{ marginRight: '1em' }} />{' '}
                 Account
               </Menu.Item>
@@ -48,7 +62,7 @@ function Header() {
         ) : (
           <>
             <Link href="/login">
-              <Menu.Item header>
+              <Menu.Item header active={pathIsActive('/login')}>
                 <Icon
                   name="sign in"
                   size="large"
@@ -58,7 +72,7 @@ function Header() {
               </Menu.Item>
             </Link>
             <Link href="/signup">
-              <Menu.Item header>
+              <Menu.Item header active={pathIsActive('/signup')}>
                 <Icon
                   name="signup"
                   size="large"
