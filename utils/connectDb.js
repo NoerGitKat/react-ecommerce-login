@@ -11,7 +11,9 @@ async function connectDB() {
     // Only connect to DB if not active yet
     const db = await mongoose.connect(process.env.MONGO_SRV, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false
     });
     console.log('DB is connected!');
     // Connect to serverless application
