@@ -29,6 +29,6 @@ const ProductSchema = new Schema({
 
 // Create model in DB if it doesn't exist
 const ProductModel =
-  mongoose.models.product || mongoose.model('product', ProductSchema);
+  mongoose.models.Product || mongoose.model('Product', ProductSchema);
 
 export default ProductModel;

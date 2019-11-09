@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -9,7 +9,8 @@ import {
   Header,
   Icon
 } from 'semantic-ui-react';
-// import ProductModel from './../models/Product';
+import axios from 'axios';
+import baseUrl from '../utils/baseUrl';
 
 const INITIAL_STATE = {
   name: '',
@@ -22,6 +23,8 @@ function CreateProduct() {
   const [product, setProduct] = useState(INITIAL_STATE);
   const [mediaPreview, setMediaPreview] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleChange = e => {
     const { name, value, files } = e.target;
@@ -35,16 +38,40 @@ function CreateProduct() {
     }
   };
 
-  const handleSubmit = e => {
+  const handleImageUpload = async img => {
+    const imgData = new FormData();
+    imgData.append('file', product.media);
+    imgData.append('upload_preset', 'onlineshop');
+    imgData.append('cloud_name', 'noerimages');
+    const response = await axios.post(process.env.CLOUDINARY_URL, imgData);
+    const mediaUrl = response.data.url;
+    return mediaUrl;
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    //  TODO: insert into DB
-
+    setIsLoading(true);
+    const mediaUrl = await handleImageUpload();
+    const apiUrl = `${baseUrl}/api/product`;
+    const payload = { ...product, mediaUrl };
+    const response = await axios.post(apiUrl, payload);
+    console.log(response);
+    setIsLoading(false);
     setProduct(INITIAL_STATE);
     setIsSuccess(true);
   };
 
-  console.log(product);
+  useEffect(() => {
+    // Disable submit button if fields empty
+    const productValues = Object.values(product);
+    const productIsNotEmpty = productValues.every(value => Boolean(value));
+    if (productIsNotEmpty) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [product]);
 
   return (
     <>
@@ -52,7 +79,7 @@ function CreateProduct() {
         <Icon name="add" color="orange" />
         Create New Product
       </Header>
-      <Form success={isSuccess} onSubmit={handleSubmit}>
+      <Form loading={isLoading} success={isSuccess} onSubmit={handleSubmit}>
         <Message
           success
           icon="check"
@@ -104,6 +131,7 @@ function CreateProduct() {
         <Form.Field
           control={Button}
           color="blue"
+          disabled={isDisabled || isLoading}
           icon="pencil alternate"
           content="Create Product"
         />
