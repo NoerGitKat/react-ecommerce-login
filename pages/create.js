@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
+import catchErrors from '../utils/catchErrors';
 
 const INITIAL_STATE = {
   name: '',
@@ -25,6 +26,7 @@ function CreateProduct() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = e => {
     const { name, value, files } = e.target;
@@ -50,16 +52,22 @@ function CreateProduct() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-
     setIsLoading(true);
-    const mediaUrl = await handleImageUpload();
-    const apiUrl = `${baseUrl}/api/product`;
-    const payload = { ...product, mediaUrl };
-    const response = await axios.post(apiUrl, payload);
-    console.log(response);
-    setIsLoading(false);
-    setProduct(INITIAL_STATE);
-    setIsSuccess(true);
+
+    try {
+      const mediaUrl = await handleImageUpload();
+      const apiUrl = `${baseUrl}/api/product`;
+      const payload = { ...product, mediaUrl };
+      const response = await axios.post(apiUrl, payload);
+      console.log(response);
+      setProduct(INITIAL_STATE);
+      setIsSuccess(true);
+    } catch (err) {
+      console.error('ERROR! The form submission failed:', err);
+      catchErrors(err, setErrorMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -79,7 +87,13 @@ function CreateProduct() {
         <Icon name="add" color="orange" />
         Create New Product
       </Header>
-      <Form loading={isLoading} success={isSuccess} onSubmit={handleSubmit}>
+      <Form
+        loading={isLoading}
+        error={Boolean(errorMsg)}
+        success={isSuccess}
+        onSubmit={handleSubmit}
+      >
+        <Message error header="Oops!" content={errorMsg} />
         <Message
           success
           icon="check"

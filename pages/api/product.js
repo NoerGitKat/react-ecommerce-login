@@ -36,7 +36,10 @@ const productRouter = async (req, res) => {
         return res.status(405).json({ msg: `Method ${method} not allowed!` });
     }
   } catch (err) {
-    return res.status(500).json({ msg: `Server Error! ${err.message}` });
+    console.error(err);
+    return res
+      .status(500)
+      .json({ msg: `Server Error in creating a product! ${err.message}` });
   }
 };
 
