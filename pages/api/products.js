@@ -3,15 +3,19 @@ import connectDB from './../../utils/connectDB';
 
 connectDB();
 
-const productRouter = async (req, res) => {
-  const allProducts = await ProductModel.find();
+const productsRouter = async (req, res) => {
+  try {
+    const allProducts = await ProductModel.find();
 
-  switch (req.method) {
-    case 'GET':
-      return res.status(200).json(allProducts);
-    default:
-      return res.status(500).json({ msg: 'this is default' });
+    switch (req.method) {
+      case 'GET':
+        return res.status(200).json(allProducts);
+      default:
+        return res.status(500).json({ msg: 'this is default' });
+    }
+  } catch (err) {
+    return res.status(500).json({ msg: ' Server Error!' });
   }
 };
 
-export default productRouter;
+export default productsRouter;
