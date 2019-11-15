@@ -5,14 +5,11 @@ import { useRouter } from "next/router";
 // Util
 import showProgressBar from "./../../utils/showProgressBar";
 
-function Header() {
+const Header = ({ user }) => {
   const router = useRouter();
 
   // Shows progress bar
   showProgressBar();
-
-  // Temp user
-  const user = false;
 
   // Check current path for active state
   function pathIsActive(pathname) {
@@ -86,6 +83,6 @@ function Header() {
       </Container>
     </Menu>
   );
-}
+};
 
 export default Header;

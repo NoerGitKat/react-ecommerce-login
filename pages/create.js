@@ -41,13 +41,17 @@ function CreateProduct() {
   };
 
   const handleImageUpload = async img => {
-    const imgData = new FormData();
-    imgData.append("file", product.media);
-    imgData.append("upload_preset", "onlineshop");
-    imgData.append("cloud_name", "noerimages");
-    const response = await axios.post(process.env.CLOUDINARY_URL, imgData);
-    const mediaUrl = response.data.url;
-    return mediaUrl;
+    try {
+      const imgData = new FormData();
+      imgData.append("file", product.media);
+      imgData.append("upload_preset", "onlineshop");
+      imgData.append("cloud_name", "noerimages");
+      const response = await axios.post(process.env.CLOUDINARY_URL, imgData);
+      const mediaUrl = response.data.url;
+      return mediaUrl;
+    } catch (err) {
+      console.log(`Client error! ${err}`);
+    }
   };
 
   const handleSubmit = async e => {

@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import axios from 'axios';
-import baseUrl from './../utils/baseUrl';
+import { useEffect } from "react";
+import axios from "axios";
+import baseUrl from "./../utils/baseUrl";
 
 // Components
-import ProductList from './../components/Index/ProductList';
+import ProductList from "./../components/Index/ProductList";
 
 function Home(props) {
   const { products } = props;
@@ -12,10 +12,14 @@ function Home(props) {
 }
 
 Home.getInitialProps = async () => {
-  const url = `${baseUrl}/api/products`;
-  const response = await axios.get(url);
-  const products = response.data;
-  return { products };
+  try {
+    const url = `${baseUrl}/api/products`;
+    const response = await axios.get(url);
+    const products = response.data;
+    return { products };
+  } catch (err) {
+    console.log(`Client Error! ${err}`);
+  }
 };
 
 export default Home;

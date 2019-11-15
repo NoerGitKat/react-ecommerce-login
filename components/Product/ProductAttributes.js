@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import { Header, Button, Modal } from 'semantic-ui-react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
-import baseUrl from '../../utils/baseUrl';
+import { useState } from "react";
+import { Header, Button, Modal } from "semantic-ui-react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import baseUrl from "../../utils/baseUrl";
 
 function ProductAttributes({ description, _id }) {
   const [isOpened, setIsOpened] = useState(false);
   const router = useRouter();
 
   const handleDelete = async () => {
-    const url = `${baseUrl}/api/product`;
-    const payload = { params: { _id } };
-    // Empty response
-    await axios.delete(url, payload);
-    router.push('/');
+    try {
+      const url = `${baseUrl}/api/product`;
+      const payload = { params: { _id } };
+      // Empty response
+      await axios.delete(url, payload);
+      router.push("/");
+    } catch (err) {
+      console.log(`Client error! ${err}`);
+    }
   };
 
   return (

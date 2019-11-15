@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { isEmail } from "validator";
 
 import UserModel from "./../../models/User";
-import connectDB from "./../../utils/connectDb";
+import connectDB from "./../../utils/connectDB";
 
 const loginRouter = async (req, res) => {
   const {
@@ -32,7 +32,6 @@ const loginRouter = async (req, res) => {
             .status(422)
             .send(`There is no user with this email address known!`);
         }
-        console.log("passwordIsCorrect", user);
 
         // 3. Check if password is correct
         const passwordIsCorrect = await bcrypt.compare(password, user.password);

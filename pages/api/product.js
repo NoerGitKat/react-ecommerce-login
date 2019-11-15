@@ -1,5 +1,5 @@
 import ProductModel from "./../../models/Product";
-import connectDb from "./../../utils/connectDb";
+import connectDb from "../../utils/connectDB";
 
 const productRouter = async (req, res) => {
   try {
@@ -39,7 +39,7 @@ const productRouter = async (req, res) => {
     console.error(err);
     return res
       .status(500)
-      .json({ msg: `Server Error in creating a product! ${err.message}` });
+      .send(`Server Error in creating a product! ${err.message}`);
   }
 };
 

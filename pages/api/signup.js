@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "./../../models/User";
-import connectDB from "./../../utils/connectDb";
+import CartModel from "./../../models/Cart";
+import connectDB from "./../../utils/connectDB";
 import { isEmail, isLength } from "validator";
 
 const signupRouter = async (req, res) => {
@@ -54,7 +55,14 @@ const signupRouter = async (req, res) => {
 
         await newUser.save();
 
-        // 5. Create token for new user
+        // 5. Create Cart for new user
+        const newCart = new CartModel({
+          user: newUser._id
+        });
+
+        await newCart.save();
+
+        // 6. Create token for new user
         const jwtToken = jwt.sign(
           { userId: newUser._id },
           process.env.JWT_SECRET,
@@ -63,6 +71,7 @@ const signupRouter = async (req, res) => {
           }
         );
 
+        // Send back response with token
         return res.status(200).json(jwtToken);
       } catch (error) {
         return res
