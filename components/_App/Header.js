@@ -1,9 +1,9 @@
-import { Menu, Container, Image, Icon } from 'semantic-ui-react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { Menu, Container, Image, Icon } from "semantic-ui-react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 // Util
-import showProgressBar from './../../utils/showProgressBar';
+import showProgressBar from "./../../utils/showProgressBar";
 
 function Header() {
   const router = useRouter();
@@ -20,33 +20,33 @@ function Header() {
   }
 
   return (
-    <Menu fluid={true} id="menu" inverted={true}>
+    <Menu fluid id="menu" inverted stackable>
       <Container text>
         <Link href="/">
-          <Menu.Item header active={pathIsActive('/')}>
+          <Menu.Item header active={pathIsActive("/")}>
             <Image
               size="mini"
               src="/static/logo.svg"
-              style={{ marginRight: '1em' }}
-            />{' '}
+              style={{ marginRight: "1em" }}
+            />{" "}
             React Online Shop
           </Menu.Item>
         </Link>
         <Link href="/cart">
-          <Menu.Item header active={pathIsActive('/cart')}>
-            <Icon name="cart" style={{ marginRight: '1em' }} /> Cart
+          <Menu.Item header active={pathIsActive("/cart")}>
+            <Icon name="cart" style={{ marginRight: "1em" }} /> Cart
           </Menu.Item>
         </Link>
         {user ? (
           <>
             <Link href="/create">
-              <Menu.Item header active={pathIsActive('/create')}>
-                <Icon name="add square" style={{ marginRight: '1em' }} /> Create
+              <Menu.Item header active={pathIsActive("/create")}>
+                <Icon name="add square" style={{ marginRight: "1em" }} /> Create
               </Menu.Item>
             </Link>
             <Link href="/account">
-              <Menu.Item header active={pathIsActive('/account')}>
-                <Icon name="user" size="large" style={{ marginRight: '1em' }} />{' '}
+              <Menu.Item header active={pathIsActive("/account")}>
+                <Icon name="user" size="large" style={{ marginRight: "1em" }} />{" "}
                 Account
               </Menu.Item>
             </Link>
@@ -54,30 +54,30 @@ function Header() {
               <Icon
                 name="sign out"
                 size="large"
-                style={{ marginRight: '1em' }}
-              />{' '}
+                style={{ marginRight: "1em" }}
+              />{" "}
               Logout
             </Menu.Item>
           </>
         ) : (
           <>
             <Link href="/login">
-              <Menu.Item header active={pathIsActive('/login')}>
+              <Menu.Item header active={pathIsActive("/login")}>
                 <Icon
                   name="sign in"
                   size="large"
-                  style={{ marginRight: '1em' }}
-                />{' '}
+                  style={{ marginRight: "1em" }}
+                />{" "}
                 Login
               </Menu.Item>
             </Link>
             <Link href="/signup">
-              <Menu.Item header active={pathIsActive('/signup')}>
+              <Menu.Item header active={pathIsActive("/signup")}>
                 <Icon
                   name="signup"
                   size="large"
-                  style={{ marginRight: '1em' }}
-                />{' '}
+                  style={{ marginRight: "1em" }}
+                />{" "}
                 Signup
               </Menu.Item>
             </Link>

@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button, Segment, Form, Icon, Message } from "semantic-ui-react";
-import catchErrors from "./../utils/catchErrors";
 import Link from "next/link";
+import axios from "axios";
+import catchErrors from "./../utils/catchErrors";
+import baseUrl from "./../utils/baseUrl";
+import handleAuth from "./../utils/auth";
 
 const INITIAL_USER = {
   email: "",
@@ -43,7 +46,12 @@ function Login() {
     try {
       setIsLoading(true);
       setErrorMessage("");
+
       // Make request to server
+      const endpoint = `${baseUrl}/api/login`;
+      const payload = { ...user };
+      const response = await axios.post(endpoint, payload);
+      handleAuth(response.data);
     } catch (error) {
       setIsLoading(false);
       catchErrors(error, setErrorMessage);
