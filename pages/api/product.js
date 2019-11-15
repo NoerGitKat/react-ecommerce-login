@@ -1,5 +1,5 @@
-import ProductModel from './../../models/Product';
-import connectDb from './../../utils/connectDb';
+import ProductModel from "./../../models/Product";
+import connectDb from "./../../utils/connectDb";
 
 const productRouter = async (req, res) => {
   try {
@@ -10,15 +10,15 @@ const productRouter = async (req, res) => {
     } = req;
 
     switch (method) {
-      case 'GET':
+      case "GET":
         const singleProduct = await ProductModel.findById(_id);
         return res.status(200).json(singleProduct);
-      case 'POST':
+      case "POST":
         // Make sure there's a DB connection
         connectDb();
         // Make sure user filled out all fields
         if (!name || !price || !description || !mediaUrl) {
-          return res.status(422).send('Product missing one or more fields!');
+          return res.status(422).send("Product missing one or more fields!");
         } else {
           const newProduct = new ProductModel({
             name,
@@ -29,7 +29,7 @@ const productRouter = async (req, res) => {
           await newProduct.save();
           return res.status(201).json(newProduct);
         }
-      case 'DELETE':
+      case "DELETE":
         await ProductModel.findOneAndDelete({ _id });
         return res.status(204).json({});
       default:

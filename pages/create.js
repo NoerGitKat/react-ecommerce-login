@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -8,16 +8,16 @@ import {
   Message,
   Header,
   Icon
-} from 'semantic-ui-react';
-import axios from 'axios';
-import baseUrl from '../utils/baseUrl';
-import catchErrors from '../utils/catchErrors';
+} from "semantic-ui-react";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
+import catchErrors from "../utils/catchErrors";
 
 const INITIAL_STATE = {
-  name: '',
-  price: '',
-  media: '',
-  description: ''
+  name: "",
+  price: "",
+  media: "",
+  description: ""
 };
 
 function CreateProduct() {
@@ -26,13 +26,13 @@ function CreateProduct() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = e => {
     const { name, value, files } = e.target;
 
     // Get file
-    if (name === 'media') {
+    if (name === "media") {
       setProduct(prevState => ({ ...prevState, media: files[0] }));
       setMediaPreview(window.URL.createObjectURL(files[0]));
     } else {
@@ -42,9 +42,9 @@ function CreateProduct() {
 
   const handleImageUpload = async img => {
     const imgData = new FormData();
-    imgData.append('file', product.media);
-    imgData.append('upload_preset', 'onlineshop');
-    imgData.append('cloud_name', 'noerimages');
+    imgData.append("file", product.media);
+    imgData.append("upload_preset", "onlineshop");
+    imgData.append("cloud_name", "noerimages");
     const response = await axios.post(process.env.CLOUDINARY_URL, imgData);
     const mediaUrl = response.data.url;
     return mediaUrl;
@@ -59,11 +59,12 @@ function CreateProduct() {
       const apiUrl = `${baseUrl}/api/product`;
       const payload = { ...product, mediaUrl };
       const response = await axios.post(apiUrl, payload);
-      console.log(response);
+      // Reset error and product form fields
+      setErrorMsg("");
       setProduct(INITIAL_STATE);
       setIsSuccess(true);
     } catch (err) {
-      console.error('ERROR! The form submission failed:', err);
+      console.error("ERROR! The form submission failed:", err);
       catchErrors(err, setErrorMsg);
     } finally {
       setIsLoading(false);

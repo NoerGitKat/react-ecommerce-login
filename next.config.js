@@ -2,9 +2,9 @@
 module.exports = {
   env: {
     MONGO_SRV:
-      'mongodb+srv://NoerP:Blabla_55@reactonlinestoreapp-biqzr.mongodb.net/test?retryWrites=true&w=majority',
-    JWT_SECRET: '<insert-jwt-secret>',
-    CLOUDINARY_URL: 'https://api.cloudinary.com/v1_1/noerimages/image/upload',
-    STRIPE_SECRET_KEY: '<insert-stripe-secret-key>'
+      "mongodb+srv://NoerP:Blabla_55@reactonlinestoreapp-biqzr.mongodb.net/test?retryWrites=true&w=majority",
+    JWT_SECRET: "Xr-0k|)K7RB",
+    CLOUDINARY_URL: "https://api.cloudinary.com/v1_1/noerimages/image/upload",
+    STRIPE_SECRET_KEY: "<insert-stripe-secret-key>"
   }
 };

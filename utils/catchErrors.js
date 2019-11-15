@@ -4,7 +4,7 @@ const catchErrors = (error, displayError) => {
   if (error.response) {
     // Response is not in range of 2XX
     errorMsg = error.response.data;
-    console.error('Error response', errorMsg);
+    console.error("Error response", errorMsg);
 
     // Cloudinary image upload error
     if (error.response.data.error) {
@@ -13,12 +13,13 @@ const catchErrors = (error, displayError) => {
   } else if (error.request) {
     // Request made, but not response
     errorMsg = error.request;
-    console.error('Error request', errorMsg);
+    console.error("Error request", errorMsg);
   } else {
     // Something else happened to the request
     errorMsg = error.message;
-    console.error('Error message', errorMsg);
+    console.error("Error message", errorMsg);
   }
+  // A callback that will display error in component
   displayError(errorMsg);
 };
 
