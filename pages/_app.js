@@ -1,6 +1,7 @@
 import App from "next/app";
 import axios from "axios";
 import { parseCookies, destroyCookie } from "nookies";
+import Router from "next/router";
 import { redirectUser } from "./../utils/auth";
 import baseUrl from "./../utils/baseUrl";
 import Layout from "./../components/_App/Layout";
@@ -32,6 +33,15 @@ class MyApp extends App {
         const user = response.data;
         // Add user to every page
         pageProps.user = user;
+        // Check user role, if only "user" then prohibit redirect from /create
+        const isRoot = user.role === "root";
+        const isAdmin = user.role === "admin";
+        const isNotAuthorized =
+          (!isRoot || isAdmin) && ctx.pathname === "/create";
+
+        if (isNotAuthorized) {
+          redirectUser(ctx, "/");
+        }
       } catch (err) {
         console.log(`Server error! ${err}`);
         // 1. Remove invalid token
@@ -43,6 +53,17 @@ class MyApp extends App {
 
     return { pageProps };
   }
+
+  componentDidMount() {
+    window.addEventListener("storage", this.syncLogout);
+  }
+
+  syncLogout = event => {
+    console.log("event", event);
+    if (event.key === "logout") {
+      Router.push("/login");
+    }
+  };
 
   render() {
     const { Component, pageProps } = this.props;

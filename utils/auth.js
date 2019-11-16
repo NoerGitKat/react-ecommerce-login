@@ -19,4 +19,12 @@ export const redirectUser = (ctx, location) => {
   }
 };
 
+export const handleLogout = () => {
+  // Remove authToken
+  cookie.remove("authToken");
+  // Universal log out
+  window.localStorage.setItem("logout", "logging out right now!");
+  Router.push("/login");
+};
+
 export default handleAuth;

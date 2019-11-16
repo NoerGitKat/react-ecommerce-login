@@ -4,8 +4,7 @@ import { Container } from "semantic-ui-react";
 import Header from "./Header";
 import HeadContent from "./HeadContent";
 
-function Layout({ children, user }) {
-  console.log("user", user);
+const Layout = ({ children, user }) => {
   return (
     <>
       <Head>
@@ -25,6 +24,6 @@ function Layout({ children, user }) {
       </Container>
     </>
   );
-}
+};
 
 export default Layout;

@@ -4,9 +4,15 @@ import { useRouter } from "next/router";
 
 // Util
 import showProgressBar from "./../../utils/showProgressBar";
+import { handleLogout } from "./../../utils/auth";
 
 const Header = ({ user }) => {
   const router = useRouter();
+
+  let isAdminOrRootUser;
+  if (user) {
+    isAdminOrRootUser = user.role === "admin" || user.role === "root";
+  }
 
   // Shows progress bar
   showProgressBar();
@@ -36,18 +42,21 @@ const Header = ({ user }) => {
         </Link>
         {user ? (
           <>
-            <Link href="/create">
-              <Menu.Item header active={pathIsActive("/create")}>
-                <Icon name="add square" style={{ marginRight: "1em" }} /> Create
-              </Menu.Item>
-            </Link>
+            {isAdminOrRootUser ? (
+              <Link href="/create">
+                <Menu.Item header active={pathIsActive("/create")}>
+                  <Icon name="add square" style={{ marginRight: "1em" }} />{" "}
+                  Create
+                </Menu.Item>
+              </Link>
+            ) : null}
             <Link href="/account">
               <Menu.Item header active={pathIsActive("/account")}>
                 <Icon name="user" size="large" style={{ marginRight: "1em" }} />{" "}
                 Account
               </Menu.Item>
             </Link>
-            <Menu.Item header>
+            <Menu.Item header onClick={handleLogout}>
               <Icon
                 name="sign out"
                 size="large"
