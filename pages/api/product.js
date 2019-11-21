@@ -9,13 +9,14 @@ const productRouter = async (req, res) => {
       body: { name, price, description, mediaUrl }
     } = req;
 
+    // Make sure there's a DB connection
+    connectDb();
+
     switch (method) {
       case "GET":
         const singleProduct = await ProductModel.findById(_id);
         return res.status(200).json(singleProduct);
       case "POST":
-        // Make sure there's a DB connection
-        connectDb();
         // Make sure user filled out all fields
         if (!name || !price || !description || !mediaUrl) {
           return res.status(422).send("Product missing one or more fields!");

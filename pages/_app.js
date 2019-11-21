@@ -28,16 +28,18 @@ class MyApp extends App {
       try {
         // Get user account data with token
         const endpoint = `${baseUrl}/api/account`;
-        const payload = { headers: { Authorization: authToken } };
+        const payload = { headers: { authorization: authToken } };
         const response = await axios.get(endpoint, payload);
         const user = response.data;
+
         // Add user to every page
         pageProps.user = user;
         // Check user role, if only "user" then prohibit redirect from /create
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
+
         const isNotAuthorized =
-          (!isRoot || isAdmin) && ctx.pathname === "/create";
+          (!isRoot || !isAdmin) && ctx.pathname === "/create";
 
         if (isNotAuthorized) {
           redirectUser(ctx, "/");
@@ -59,7 +61,6 @@ class MyApp extends App {
   }
 
   syncLogout = event => {
-    console.log("event", event);
     if (event.key === "logout") {
       Router.push("/login");
     }

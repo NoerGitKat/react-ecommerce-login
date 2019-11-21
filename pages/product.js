@@ -6,7 +6,7 @@ import baseUrl from "./../utils/baseUrl";
 function Product({ singleProduct, user }) {
   return (
     <>
-      <ProductSummary {...singleProduct} />
+      <ProductSummary {...singleProduct} user={user} />
       <ProductAttributes {...singleProduct} user={user} />
     </>
   );
