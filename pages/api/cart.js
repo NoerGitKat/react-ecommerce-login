@@ -21,12 +21,12 @@ const cartRouter = async (req, res) => {
           return res.status(401).send("No authorization token!");
         }
         const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
-        const cart = await CartModel.findOne({ user: userId });
-        const populatedCart = await cart.populate({
+        const cart = await CartModel.findOne({ user: userId }).populate({
           path: "products.product",
           model: "Product"
         });
-        return res.status(200).json(populatedCart.products);
+
+        return res.status(200).json(cart.products);
       } catch (error) {
         return res.status(403).send(`Server error! ${error}`);
       }
@@ -42,9 +42,9 @@ const cartRouter = async (req, res) => {
         const cart = await CartModel.findOne({ user: userId });
 
         // Check if product already exists in cart
-        const productExistsInCart = cart.products.some(document => {
-          ObjectId(productId).equals(document.product);
-        });
+        const productExistsInCart = cart.products.some(document =>
+          ObjectId(productId).equals(document.product)
+        );
 
         if (productExistsInCart) {
           // Increment quantity of given product
