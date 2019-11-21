@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import CartModel from "./../../models/Cart";
 import connectDB from "../../utils/connectDB";
 
+const { ObjectId } = mongoose.Types;
+
 const cartRouter = async (req, res) => {
   const {
     method,
@@ -34,14 +36,31 @@ const cartRouter = async (req, res) => {
           return res.status(401).send("No authorization token!");
         }
         // Verify token to get userId
-        const { userId } = jwt.verify(authorization, process.env.JWT_TOKEN);
+        const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
 
         // Get user cart based on userId
+        const cart = await CartModel.findOne({ user: userId });
 
-        // 
+        // Check if product already exists in cart
+        const productExistsInCart = cart.products.some(document => {
+          ObjectId(productId).equals(document.product);
+        });
 
-
-        return res.status(200).json();
+        if (productExistsInCart) {
+          // Increment quantity of given product
+          await CartModel.findOneAndUpdate(
+            { _id: cart._id, "products.product": productId },
+            { $inc: { "products.$.quantity": quantity } }
+          );
+        } else {
+          // Create new product in cart
+          const newProduct = { product: productId, quantity };
+          await CartModel.findOneAndUpdate(
+            { _id: cart._id },
+            { $addToSet: { products: newProduct } }
+          );
+        }
+        return res.status(200).send("Cart updated!");
       } catch (err) {
         return res.status(403).send(`Server error! ${err}`);
       }
