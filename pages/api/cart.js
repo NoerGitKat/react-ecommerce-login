@@ -10,7 +10,8 @@ const cartRouter = async (req, res) => {
   const {
     method,
     body: { quantity, productId },
-    headers: { authorization }
+    headers: { authorization },
+    query: { cartProductId }
   } = req;
 
   switch (method) {
@@ -30,6 +31,7 @@ const cartRouter = async (req, res) => {
       } catch (error) {
         return res.status(403).send(`Server error! ${error}`);
       }
+      break;
     case "PUT":
       try {
         if (!authorization) {
@@ -64,6 +66,31 @@ const cartRouter = async (req, res) => {
       } catch (err) {
         return res.status(403).send(`Server error! ${err}`);
       }
+      break;
+    case "DELETE":
+      try {
+        // Check if authToken is present
+        if (!authorization) {
+          return res.status(401).send("No authorization token!");
+        }
+        const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
+        const updatedCart = await CartModel.findOneAndUpdate(
+          { user: userId },
+          {
+            $pull: { products: { product: cartProductId } }
+          },
+          {
+            new: true
+          }
+        ).populate({
+          path: "products.product",
+          model: "Product"
+        });
+        return res.status(200).json(updatedCart.products);
+      } catch (error) {
+        return res.status(403).send(`Server error! ${error}`);
+      }
+      break;
     default:
       return res.status(405).send("Server Error!");
   }
