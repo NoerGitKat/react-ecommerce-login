@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import shortid from 'shortid';
+import mongoose from "mongoose";
+import shortid from "shortid";
 
 const Schema = mongoose.Schema;
 
@@ -29,6 +29,6 @@ const ProductSchema = new Schema({
 
 // Create model in DB if it doesn't exist
 const ProductModel =
-  mongoose.models.Product || mongoose.model('Product', ProductSchema);
+  mongoose.models.Product || mongoose.model("Product", ProductSchema);
 
 export default ProductModel;
