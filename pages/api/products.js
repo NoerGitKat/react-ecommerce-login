@@ -8,13 +8,17 @@ const productsRouter = async (req, res) => {
     query: { page, size }
   } = req;
 
+  // Convert into numbers
   const pageNum = Number(page);
-  const pageSize = Math.ceil(Number(size));
+  const pageSize = Number(size);
 
   try {
     let products = [];
+
+		// Calculate total amount of pages
     const totalDocs = await ProductModel.countDocuments();
     const totalPages = Math.ceil(totalDocs / pageSize);
+
     if (pageNum === 1) {
       products = await ProductModel.find().limit(pageSize);
     } else {

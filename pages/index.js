@@ -17,6 +17,7 @@ function Home({ products, totalPages }) {
 }
 
 Home.getInitialProps = async ctx => {
+  // Get query string from ctx
   const page = ctx.query.page ? ctx.query.page : "1";
   const size = 9;
   const payload = { params: { page, size } };
