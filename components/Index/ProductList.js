@@ -1,4 +1,4 @@
-import { Card } from 'semantic-ui-react';
+import { Card } from "semantic-ui-react";
 
 function ProductList({ products }) {
   const mapProductsToItems = products => {
@@ -6,7 +6,7 @@ function ProductList({ products }) {
       header: product.name,
       image: product.mediaUrl,
       meta: `$${product.price}`,
-      color: 'teal',
+      color: "teal",
       fluid: true,
       childKey: product._id,
       href: `/product?_id=${product._id}`
