@@ -30,7 +30,7 @@ function CartSummary({ products, handleCheckout, isSuccess }) {
           billingAddress={true}
           token={handleCheckout}
           triggerEvent="onClick"
-          stripeKey="pk_live_TGjvuSuHlMepcHyYUOJAK7kT00ikW5LcfF"
+          stripeKey="pk_test_HCS5cIY6kvFPaA2C6JvYbyCe00sggQ0who"
         >
           <Button
             icon="cart"

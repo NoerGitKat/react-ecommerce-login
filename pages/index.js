@@ -7,7 +7,6 @@ import ProductList from "./../components/Index/ProductList";
 import ProductPagination from "./../components/Index/ProductPagination";
 
 function Home({ products, totalPages }) {
-  console.log("totalPages", totalPages);
   return (
     <>
       <ProductList products={products} />

@@ -2,10 +2,10 @@ import Stripe from "stripe";
 import uuidv4 from "uuid/v4";
 import jwt from "jsonwebtoken";
 import CartModel from "./../../models/Cart";
-import OrderModel from "./../../models/OrderModel";
+import OrderModel from "./../../models/Order";
 import calculateCartTotal from "./../../utils/calculateCartTotal";
 
-const stripeKey = Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const checkoutRouter = async (req, res) => {
   const {
@@ -19,6 +19,7 @@ const checkoutRouter = async (req, res) => {
       try {
         // 1. Verify and get user id from token
         const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
+
         // 2. Find cart based on user id, populate it
         const cart = await CartModel.findOne({ user: userId }).populate({
           path: "products.product",
@@ -34,24 +35,23 @@ const checkoutRouter = async (req, res) => {
         const isExistingCustomer = stripeEmailExists.data.length > 0;
         // 5. If no exists, create a new Stripe customer
         let newStripeCustomer;
-        if (!stripeEmailExists) {
+        if (!isExistingCustomer) {
           newStripeCustomer = await stripe.customers.create({
             email: paymentData.email,
-            source: paymentData.id,
-            receipt_email: paymentData.email,
-            customer: cus
+            source: paymentData.id
           });
         }
-        //
+        // For Stripe Charge
         const customerId =
           (isExistingCustomer && stripeEmailExists[0].id) ||
-          newStripeCusomter.id;
+          newStripeCustomer.id;
 
         // Create new charge with total, send receipt email
         const newCharge = await stripe.charges.create(
           {
-            currency: "usd",
+            currency: "USD",
             amount: stripeTotal,
+            receipt_email: paymentData.email,
             customer: customerId,
             description: `Checkout | ${paymentData.email} | ${paymentData.id}`
           },

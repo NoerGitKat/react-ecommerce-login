@@ -37,7 +37,8 @@ function Cart({ products, user }) {
   const handleCheckout = async paymentData => {
     try {
       setIsLoading(true);
-      const endpoint = `${baseurl}/api/checkout`;
+      const endpoint = `${baseUrl}/api/checkout`;
+
       const authToken = cookie.get("authToken");
       const payload = {
         paymentData
@@ -49,6 +50,7 @@ function Cart({ products, user }) {
       };
 
       const response = await axios.post(endpoint, payload, headers);
+
       setIsSuccess(true);
     } catch (error) {
       catchErrors(error, window.alert);
@@ -65,7 +67,11 @@ function Cart({ products, user }) {
         handleRemoveCartProduct={handleRemoveCartProduct}
         isSuccess={isSuccess}
       />
-      <CartSummary products={cartProducts} isSuccess={isSuccess} />
+      <CartSummary
+        products={cartProducts}
+        handleCheckout={handleCheckout}
+        isSuccess={isSuccess}
+      />
     </Segment>
   );
 }

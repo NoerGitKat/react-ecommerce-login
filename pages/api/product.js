@@ -32,7 +32,7 @@ const productRouter = async (req, res) => {
         }
       case "DELETE":
         await ProductModel.findOneAndDelete({ _id });
-        return res.status(204).json({});
+        return res.status(204).json({ msg: "Product deleted!" });
       default:
         return res.status(405).json({ msg: `Method ${method} not allowed!` });
     }
@@ -40,7 +40,7 @@ const productRouter = async (req, res) => {
     console.error(err);
     return res
       .status(500)
-      .send(`Server Error in creating a product! ${err.message}`);
+      .send(`Server Error in the product route! ${err.message}`);
   }
 };
 
