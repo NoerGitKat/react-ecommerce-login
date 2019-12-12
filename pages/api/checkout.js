@@ -47,7 +47,6 @@ const checkoutRouter = async (req, res) => {
           (isExistingCustomer && prevCustomer.data[0].id) ||
           newStripeCustomer.id;
 
-        console.log("customerId", customerId);
         // Create new charge with total, send receipt email
         const newCharge = await stripe.charges.create(
           {

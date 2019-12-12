@@ -34,7 +34,7 @@ const accountRouter = async (req, res) => {
     case "PUT":
       try {
         const updatedUser = await UserModel.findOneAndUpdate({ _id }, { role });
-        console.log(updatedUser);
+
         return res.status(200).send("User updated!");
       } catch (err) {
         return res.status(403).send(`Token is invalid! ${err}`);

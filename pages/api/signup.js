@@ -36,7 +36,6 @@ const signupRouter = async (req, res) => {
         const userExists = await UserModel.findOne({ email });
 
         if (userExists) {
-          console.log("userExists", userExists);
           return res
             .status(422)
             .send(`The email address ${email} already exists!`);
