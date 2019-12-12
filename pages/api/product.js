@@ -1,4 +1,5 @@
 import ProductModel from "./../../models/Product";
+import CartModel from "./../../models/Cart";
 import connectDb from "../../utils/connectDB";
 
 const productRouter = async (req, res) => {
@@ -31,7 +32,15 @@ const productRouter = async (req, res) => {
           return res.status(201).json(newProduct);
         }
       case "DELETE":
+        // Delete product from inventory
         await ProductModel.findOneAndDelete({ _id });
+        // Delete product from everyone's cart
+        await CartModel.updateMany(
+          {
+            "products.product": _id
+          },
+          { $pull: { products: { product: _id } } }
+        );
         return res.status(204).json({ msg: "Product deleted!" });
       default:
         return res.status(405).json({ msg: `Method ${method} not allowed!` });

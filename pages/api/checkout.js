@@ -28,11 +28,11 @@ const checkoutRouter = async (req, res) => {
         // 3. Recalculate cart totals (security)
         const { cartTotal, stripeTotal } = calculateCartTotal(cart.products);
         // 4. Get email from paymentData, see if linked to existing Stripe customer
-        const stripeEmailExists = await stripe.customers.list({
+        const prevCustomer = await stripe.customers.list({
           email: paymentData.email,
           limit: 1
         });
-        const isExistingCustomer = stripeEmailExists.data.length > 0;
+        const isExistingCustomer = prevCustomer.data.length > 0;
         // 5. If no exists, create a new Stripe customer
         let newStripeCustomer;
         if (!isExistingCustomer) {
@@ -41,11 +41,13 @@ const checkoutRouter = async (req, res) => {
             source: paymentData.id
           });
         }
+
         // For Stripe Charge
         const customerId =
-          (isExistingCustomer && stripeEmailExists[0].id) ||
+          (isExistingCustomer && prevCustomer.data[0].id) ||
           newStripeCustomer.id;
 
+        console.log("customerId", customerId);
         // Create new charge with total, send receipt email
         const newCharge = await stripe.charges.create(
           {

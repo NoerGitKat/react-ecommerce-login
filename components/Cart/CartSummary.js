@@ -21,7 +21,7 @@ function CartSummary({ products, handleCheckout, isSuccess }) {
       <Segment clearing size="large">
         <strong>Sub total:</strong> ${cartAmount}
         <StripeCheckout
-          name="React Online Shop"
+          name="HackYourFuture"
           amount={stripeAmount}
           description={"Buy some shit"}
           image={products.length > 0 ? products[0].product.mediaUrl : ""}

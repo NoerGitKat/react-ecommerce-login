@@ -39,7 +39,7 @@ class MyApp extends App {
         const isAdmin = user.role === "admin";
 
         const isNotAuthorized =
-          (!isRoot || !isAdmin) && ctx.pathname === "/create";
+          !(isRoot || isAdmin) && ctx.pathname === "/create";
 
         if (isNotAuthorized) {
           redirectUser(ctx, "/");

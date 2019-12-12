@@ -32,7 +32,7 @@ const Header = ({ user }) => {
               src="/static/logo.svg"
               style={{ marginRight: "1em" }}
             />{" "}
-            React Online Shop
+            HackYourShop
           </Menu.Item>
         </Link>
         <Link href="/cart">
