@@ -8,6 +8,7 @@ import {
   List,
   Image
 } from "semantic-ui-react";
+import formatDate from "./../../utils/formatDate";
 import { useRouter } from "next/router";
 
 function AccountOrders({ orders }) {
@@ -17,7 +18,7 @@ function AccountOrders({ orders }) {
     return orders.map(order => ({
       key: order._id,
       title: {
-        content: <Label color="blue" content={order.createdAt} />
+        content: <Label color="blue" content={formatDate(order.createdAt)} />
       },
       content: {
         content: (
