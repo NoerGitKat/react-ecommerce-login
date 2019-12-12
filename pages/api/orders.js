@@ -14,10 +14,14 @@ const ordersRouter = async (req, res) => {
         // Get userId from token
         const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
         // Get orders from model
-        const orders = await OrderModel.find({ user: userId }).populate({
-          path: "products.product",
-          model: "Product"
-        });
+        const orders = await OrderModel.find({ user: userId })
+          .sort({
+            createdAt: "desc"
+          })
+          .populate({
+            path: "products.product",
+            model: "Product"
+          });
 
         return res.status(200).json({ orders });
       } catch (err) {

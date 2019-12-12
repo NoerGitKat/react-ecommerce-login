@@ -15,12 +15,14 @@ const productsRouter = async (req, res) => {
   try {
     let products = [];
 
-		// Calculate total amount of pages
+    // Calculate total amount of pages
     const totalDocs = await ProductModel.countDocuments();
     const totalPages = Math.ceil(totalDocs / pageSize);
 
     if (pageNum === 1) {
-      products = await ProductModel.find().limit(pageSize);
+      products = await ProductModel.find()
+        .sort({ name: "asc" })
+        .limit(pageSize);
     } else {
       const skippedProducts = pageSize * (pageNum - 1);
       products = await ProductModel.find()

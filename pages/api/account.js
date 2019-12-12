@@ -2,7 +2,10 @@ import jwt from "jsonwebtoken";
 import UserModel from "./../../models/User";
 
 const accountRouter = async (req, res) => {
-  const { method } = req;
+  const {
+    method,
+    body: { _id, role }
+  } = req;
 
   switch (method) {
     case "GET":
@@ -25,6 +28,14 @@ const accountRouter = async (req, res) => {
         } else {
           return res.status(404).send("User not found!");
         }
+      } catch (err) {
+        return res.status(403).send(`Token is invalid! ${err}`);
+      }
+    case "PUT":
+      try {
+        const updatedUser = await UserModel.findOneAndUpdate({ _id }, { role });
+        console.log(updatedUser);
+        return res.status(200).send("User updated!");
       } catch (err) {
         return res.status(403).send(`Token is invalid! ${err}`);
       }
