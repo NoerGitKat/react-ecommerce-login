@@ -34,25 +34,28 @@ function AccountOrders({ orders }) {
               />
             </List.Header>
             <List>
-              {order.products.map(product => (
-                <List.Item key={product._id}>
-                  <Image avatar src={product.product.mediaUrl} />
-                  <List.Content>
-                    <List.Header>{product.product.name}</List.Header>
-                    <List.Description>
-                      Quantity: {product.quantity}
-                    </List.Description>
-                    <List.Description>
-                      Total Price: ${product.product.price}
-                    </List.Description>
-                  </List.Content>
-                  <List.Content floated="right">
-                    <Label tag color="red" size="tiny">
-                      {product.product.sku}
-                    </Label>
-                  </List.Content>
-                </List.Item>
-              ))}
+              {order.products.map(product => {
+                console.log("product", product);
+                return (
+                  <List.Item key={product._id}>
+                    <Image avatar src={product.product.mediaUrl} />
+                    <List.Content>
+                      <List.Header>{product.product.name}</List.Header>
+                      <List.Description>
+                        Quantity: {product.quantity}
+                      </List.Description>
+                      <List.Description>
+                        Total Price: ${product.product.price}
+                      </List.Description>
+                    </List.Content>
+                    <List.Content floated="right">
+                      <Label tag color="red" size="tiny">
+                        {product.product.sku}
+                      </Label>
+                    </List.Content>
+                  </List.Item>
+                );
+              })}
             </List>
           </>
         )
